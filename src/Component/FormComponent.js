@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ListingComponent from "./ListingComponent";
 
 class FormComponent extends Component {
     constructor() {
@@ -205,6 +206,11 @@ class FormComponent extends Component {
                 <button className="btn btn-primary pull-right" onClick={this.clickHandler}
                         disabled={this.state.error.status}>Submit
                 </button>
+                <div className='row'>
+                    <div className='col-sm-12'>
+                        <ListingComponent persons = {this.state.persons}/>
+                    </div>
+                </div>
             </div>
         )
     }
