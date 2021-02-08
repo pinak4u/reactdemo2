@@ -47,32 +47,27 @@ class FormComponent extends Component {
             name,
         })
     }
-
     passwordChangeHandler = (event) => {
         this.setState({
             password: event.target.value,
         })
     }
-
     genderChangeHandler = (event, gender) => {
         this.setState({
             gender: event.target.value,
         })
     }
-
     skillChangeHandler = (event) => {
         this.setState({
             skill: event.target.value,
         })
     }
-
     descriptionChangeHandler = (event) => {
         let description = event.target.value;
         this.setState({
             description
         })
     }
-
     clickHandler = () => {
         const name = this.state.name;
         const password = this.state.password;
@@ -84,12 +79,10 @@ class FormComponent extends Component {
         const person = {name, password, skill, gender, description, osPreference, myfile}
         this.setState(prevState => ({
             persons: [...prevState.persons, person]
-        }), () => {
+        }),()=>{
             this.resetForm();
-            console.log(this.state.persons);
         });
     }
-
     osPreferenceChangeHandler = (event) => {
         let os = event.target.value;
         let osIndex = this.tempRef.findIndex(element => element == os);
@@ -103,7 +96,6 @@ class FormComponent extends Component {
             error
         })
     }
-
     fileChangeHandler = (event) => {
         let {lastModified, name, size, type} = event.target.files[0];
         let myfile = {lastModified, name, size, type}
@@ -111,7 +103,6 @@ class FormComponent extends Component {
             myfile
         })
     }
-
     resetForm = () => {
         this.setState({
             name: '',
@@ -137,6 +128,14 @@ class FormComponent extends Component {
         let errorNormalState = {status: false, message: ''};
         let error = (this.state.name !== '' && this.state.name.length <= 2) || (this.state.description !== '' && this.state.description.length <= 2) || (this.state.osPreference.length <= 0) ? errorState : errorNormalState;
         this.setState({error});
+    }
+    removePersonFromPersonsArray(name){
+        let namedPerson = this.state.persons.findIndex(element => element.name == name);
+        let tempArray = this.state.persons;
+        tempArray.splice(namedPerson, 1) ;
+        this.setState({
+            persons: tempArray,
+        });
     }
     render() {
 
@@ -208,7 +207,8 @@ class FormComponent extends Component {
                 </button>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <ListingComponent persons = {this.state.persons}/>
+                        <h4 className={'mb-4 mt-4'}>Persons List</h4>
+                        <ListingComponent persons={this.state.persons} deletePerson = {(name)=>{this.removePersonFromPersonsArray(name)}}/>
                     </div>
                 </div>
             </div>

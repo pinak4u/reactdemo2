@@ -1,16 +1,31 @@
 import React, {Component} from 'react';
 
-export default class ListingComponent extends Component {
+class ListingComponent extends Component {
     constructor(props) {
         super(props);
     }
 
+    personClickHandler=(name)=>{
+        this.props.deletePerson(name);
+    }
     render() {
-        console.log(this.props);
-        return(
+        let PersonLists = this.props.persons.length > 0 ?
+            this.props.persons.map((person) => {
+                return (
+                    <li key={Math.random()}>
+                            <span>{person.name}</span> - <span>{person.skill.toUpperCase()} DEVELOPER</span>
+                            <button className={'btn btn-danger btn-sm mb-2'} onClick={()=>this.personClickHandler(person.name)}>Remove {person.name}</button>
+                    </li>)
+            }) :
+            <li>No data found.</li>
+        return (
             <div>
-                <p>test</p>
+                <ol>
+                    {PersonLists}
+                </ol>
             </div>
         )
     }
 }
+
+export default ListingComponent;
