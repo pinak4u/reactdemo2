@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import ListingComponent from "./ListingComponent";
+import OsPreferences from "./OsPreferences";
+import SkillsSelectComponent from "./SkillsSelectComponent";
+import GenderSelection from "./GenderSelection";
+import ProfileImageComponent from "./ProfileImageComponent";
 
 class FormComponent extends Component {
     constructor() {
@@ -40,7 +44,6 @@ class FormComponent extends Component {
         this.tempRef = [];
         this.resetForm();
     }
-
     nameChangeHandler = (event) => {
         let name = event.target.value;
         this.setState({
@@ -85,12 +88,12 @@ class FormComponent extends Component {
     }
     osPreferenceChangeHandler = (event) => {
         let os = event.target.value;
+
         let osIndex = this.tempRef.findIndex(element => element == os);
         osIndex == -1 ? this.tempRef.push(os) : this.tempRef.splice(osIndex, 1);
         let errorState = {status: true, message: 'Please Select any OS'};
         let errorNormalState = {status: false, message: ''};
         let error = this.tempRef.length <= 0 ? errorState : errorNormalState;
-
         this.setState({
             osPreference: this.tempRef,
             error
@@ -162,52 +165,26 @@ class FormComponent extends Component {
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 d-inline'>
-                        <input id="genderMale" type="radio" name="gender" value="male" ref={this.maleRef}
-                               onChange={(event) => this.genderChangeHandler(event, 'male')}
-                               onBlur={this.checkErrorStatus}
-                        />
-                        <label htmlFor="genderMale">Male</label>
-                        <input id="genderFemale" type="radio" name="gender" value="female" ref={this.femaleRef}
-                               onChange={(event) => this.genderChangeHandler(event, 'female')}
-                               onBlur={this.checkErrorStatus}
-                        />
-                        <label htmlFor="genderFemale">Female</label>
+                        <GenderSelection checked = {true} id={'male'} value={'male'} label={'Male '} changeHandler={(event) => this.genderChangeHandler(event, 'male')} blurHandler={this.checkErrorStatus} ref={this.maleRef} />
+                        <GenderSelection id={'female'} value={'female'} label={'Female '} changeHandler={(event) => this.genderChangeHandler(event, 'female')} blurHandler={this.checkErrorStatus} ref={this.femaleRef} />
                     </div>
                     <div className='col-sm-4 d-inline'>
-                        <label htmlFor="skills">Skills</label>
-                        <select name="skills" id="skills" onChange={this.skillChangeHandler} ref={this.skillsRef}
-                                onBlur={this.checkErrorStatus}>
-                            <option value="vue">Vue</option>
-                            <option value="angular">Angular</option>
-                            <option value="react">React</option>
-                        </select>
+                        <SkillsSelectComponent label={'Frameworks'} errorHandler = {this.checkErrorStatus} changeHandler={(event)=>this.skillChangeHandler(event)}ref={this.skillsRef}/>
                     </div>
                     <div className='col-sm-4 d-inline'>
-
-                        <input type="checkbox" onChange={(event) => this.osPreferenceChangeHandler(event)} name='os[]'
-                               value="linux" id="linux" ref={this.linuxRef} onBlur={this.checkErrorStatus}/>
-                        <label htmlFor="linux">Linux</label>
-
-                        <input type="checkbox" onChange={(event) => this.osPreferenceChangeHandler(event)} name='os[]'
-                               value="macos" id="macos" ref={this.macRef} onBlur={this.checkErrorStatus}/>
-                        <label htmlFor="macos">Mac OS</label>
-
-                        <input type="checkbox" onChange={(event) => this.osPreferenceChangeHandler(event)} name='os[]'
-                               value="windows" id="windows" ref={this.windowRef} onBlur={this.checkErrorStatus}/>
-                        <label htmlFor="windows">Windows</label>
-
+                        <OsPreferences value={'linux'} id={'linux'} ref={this.linuxRef} label={'Linux'} changeFired = {(event) => this.osPreferenceChangeHandler(event)} blurHandler={()=>{this.checkErrorStatus()}}/>
+                        <OsPreferences value={'macos'} id={'macos'} ref={this.macRef} label={'Mac OS'} changeFired = {(event) => this.osPreferenceChangeHandler(event)} blurHandler={()=>{this.checkErrorStatus()}}/>
+                        <OsPreferences value={'linux'} id={'linux'} ref={this.windowRef} label={'Windows'} changeFired = {(event) => this.osPreferenceChangeHandler(event)} blurHandler={()=>{this.checkErrorStatus()}}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <input id='profileImage' type="file" onChange={this.fileChangeHandler} ref={this.fileRef}
-                           onBlur={this.checkErrorStatus}/>
+                    <ProfileImageComponent id={'profileImage'} ref={this.fileRef} changeHandler={(event)=>this.fileChangeHandler(event)} blurHandler={this.checkErrorStatus}/>
                 </div>
                 <button className="btn btn-primary pull-right" onClick={this.clickHandler}
                         disabled={this.state.error.status}>Submit
                 </button>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <h4 className={'mb-4 mt-4'}>Persons List</h4>
                         <ListingComponent persons={this.state.persons} deletePerson = {(name)=>{this.removePersonFromPersonsArray(name)}}/>
                     </div>
                 </div>

@@ -17,9 +17,10 @@ class ListingComponent extends Component {
                             <button className={'btn btn-danger btn-sm mb-2'} onClick={()=>this.personClickHandler(person.name)}>Remove {person.name}</button>
                     </li>)
             }) :
-            <li>No data found.</li>
+            <p id={'noData'}>No data found.</p>
         return (
             <div>
+                <h4 className={'mb-4 mt-4'}>Persons List</h4>
                 <ol>
                     {PersonLists}
                 </ol>
